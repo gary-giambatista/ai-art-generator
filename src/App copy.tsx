@@ -5,38 +5,37 @@ import "./App.css";
 import Image from "./components/Image";
 
 function App() {
-	//configure openAI
 	const configuration = new Configuration({
-		apiKey: process.env.OPEN_AI_KEY,
+		apiKey: process.env.REACT_APP_API_KEY,
 	});
 	const openai = new OpenAIApi(configuration);
 
-	//state
 	const [userPrompt, setUserPrompt] = useState("");
-	const [images, setImages] = useState([]);
+	const [images, setImages] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
 
-	//api call to generate images, and set state
-	const generateImage = async (event) => {
+	const generateImage = async (
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+	) => {
 		setLoading(true);
-		let emptyArray = [];
+		let emptyArray: any[] = [];
 		event.preventDefault();
 		const imageParameters = {
 			prompt: userPrompt,
-			n: 4,
-			size: "256x256",
+			n: 3,
+			size: "512x512",
 		};
 
 		try {
-			const response = await openai.createImage(imageParameters);
+			const response = await openai.createImage(imageParameters as any);
 			// const image_url = response.data.data[0].url;
-			const urlData = response.data.data.forEach((picture) => {
+			const urlData = response.data.data.forEach((picture): void => {
 				emptyArray.push(picture.url);
 				// setImages((prevPic) => [...prevPic, picture.url]); why doesn't this work?
 			});
 			setImages(emptyArray);
 			setLoading(false);
-		} catch (error) {
+		} catch (error: any) {
 			if (error.response) {
 				console.log(error.response.status);
 				console.log(error.response.data);
@@ -50,7 +49,7 @@ function App() {
 	return (
 		<div className="App">
 			<header className="header">
-				<h1 className="title">Generate Art with AI</h1>
+				<h1>Generate Art with AI</h1>
 			</header>
 			{/* <Image /> */}
 			<form className="form_container">
@@ -74,34 +73,18 @@ function App() {
 						return <Image key={index} image={images[index]} />;
 					})
 				) : loading ? null : (
-					<p className="description_text">
-						{" "}
-						Type a search into the box above to generate your AI images!
-					</p>
+					<p> Type a search into the box above to generate your AI images!</p>
 				)}
-
 				<CircleLoader
-					cssOverride={override}
 					loading={loading}
 					aria-label="Loading Spinner"
 					size={150}
 					color="#36d7b7"
 				/>
 			</div>
-			<div className="footer_container">
-				<ul className="footer_text">
-					<li>Desgined by Gary Giambatista</li>
-					<li>Gary.Giambatista@gmail.com</li>
-					<li>Copyright © Gary Giambatista 2022</li>
-				</ul>
-			</div>
 		</div>
 	);
 }
-//css style for CircleLoader
-const override = {
-	marginTop: 100,
-	position: "relative",
-};
+//
 
 export default App;

@@ -8,7 +8,7 @@ interface Props {
 const Image: React.FC<Props> = ({ image }) => {
 	return (
 		<div className="imageContainer">
-			<p>Image</p>
+			{/* <p className="image_title">Test</p> */}
 			<img className="image" src={image} alt="Ai generated" />
 		</div>
 	);

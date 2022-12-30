@@ -1,6 +1,12 @@
 .imageContainer {
-	color: brown;
+	padding-top: 50px;
+}
+.image_title {
+	color: #fff;
 }
 .image {
 	width: 100%;
+	border: 1px solid #ffffff;
+	box-shadow: black 0px 3px 3px;
+	border-radius: 5px;
 }
